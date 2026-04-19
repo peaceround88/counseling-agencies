@@ -282,13 +282,6 @@ footer strong{color:var(--navy);font-weight:500}
         <label>行政區</label>
         <select id="sel-dist" onchange="render()">
           <option value="">── 全部行政區 ──</option>
-          <optgroup label="原高雄市區">
-            <option>鹽埕區</option><option>鼓山區</option><option>左營區</option>
-            <option>楠梓區</option><option>三民區</option><option>新興區</option>
-            <option>前金區</option><option>苓雅區</option><option>前鎮區</option>
-            <option>旗津區</option><option>小港區</option>
-          </optgroup>
-          <optgroup label="原高雄縣區">
             <option>鳳山區</option><option>林園區</option><option>大寮區</option>
             <option>大樹區</option><option>大社區</option><option>仁武區</option>
             <option>鳥松區</option><option>岡山區</option><option>橋頭區</option>
@@ -350,8 +343,6 @@ document.getElementById('update-date').textContent =
      website  官方網站網址（無則填 ""）
      services 服務項目陣列
      hours    服務時段說明
-     online   是否提供線上預約 true/false
-     youth    是否有青少年服務 true/false
      note     備註說明（無則填 ""）
    ══════════════════════════════════════════════════════ */
 const DATA = [
@@ -367,7 +358,7 @@ const DATA = [
     hours:    "週一至週五　09:00 – 21:00",
     online:   true,
     youth:    true,
-    note:     "設有1980輔導專線，24小時提供電話輔導服務，亦接受學校個案轉介"
+    note:     "設有1980輔導專線，24小時提供電話輔導服務"
   },
   {
     name:     "回甘諮商所",
@@ -377,7 +368,7 @@ const DATA = [
     hotline:  "",
     email:    "service@huigan.com.tw",
     website:  "",
-    services: ["個別諮商","親子諮商",""],
+    services: ["個別諮商","親子諮商"],
     hours:    "週二至週六　10:00 – 21:00",
     online:   true,
     youth:    true,
