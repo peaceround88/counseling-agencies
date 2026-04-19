@@ -447,8 +447,6 @@ function render(){
         </div>
         <div class="svc-row">
           ${d.services.map(s=>`<span class="${svcClass(s)}">${s}</span>`).join('')}
-          ${d.online?'<span class="svc svc-online">線上預約</span>':''}
-          ${d.youth?'<span class="svc svc-youth">青少年服務</span>':''}
         </div>
         ${d.note?`<div class="note-box">📌　${d.note}</div>`:''}
       </div>
