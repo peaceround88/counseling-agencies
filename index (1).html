@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高雄市政府教育局｜合作諮商機構查詢</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d3b6e;
+  --navy-mid:#1a5c96;
+  --navy-light:#2e7fc1;
+  --gold:#c8a84b;
+  --gold-light:#f0d98a;
+  --cream:#faf8f3;
+  --white:#ffffff;
+  --gray-100:#f4f5f7;
+  --gray-200:#e8eaed;
+  --gray-400:#9aa1ad;
+  --gray-600:#555d6b;
+  --gray-800:#2c3340;
+  --green:#2e7d32;
+  --green-bg:#e8f5e9;
+  --radius:12px;
+  --radius-sm:8px;
+  --shadow:0 2px 12px rgba(13,59,110,.08);
+  --shadow-hover:0 8px 28px rgba(13,59,110,.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--cream);color:var(--gray-800);min-height:100vh}
+
+header{
+  background:var(--navy);
+  position:relative;
+  overflow:hidden;
+  padding:2.5rem 1.5rem 2rem;
+  text-align:center;
+}
+header::before{
+  content:'';position:absolute;
+  top:-60px;right:-80px;
+  width:320px;height:320px;border-radius:50%;
+  background:rgba(200,168,75,.08);pointer-events:none;
+}
+header::after{
+  content:'';position:absolute;
+  bottom:-80px;left:-60px;
+  width:260px;height:260px;border-radius:50%;
+  background:rgba(255,255,255,.04);pointer-events:none;
+}
+.header-badge{
+  display:inline-block;
+  font-family:'Noto Serif TC',serif;
+  font-size:11px;letter-spacing:3px;
+  color:var(--gold-light);
+  border:1px solid rgba(200,168,75,.4);
+  padding:4px 16px;border-radius:99px;
+  margin-bottom:1rem;position:relative;z-index:1;
+}
+header h1{
+  font-family:'Noto Serif TC',serif;
+  font-size:clamp(20px,4vw,28px);font-weight:600;
+  color:var(--white);line-height:1.5;
+  position:relative;z-index:1;margin-bottom:.5rem;
+}
+header p{
+  font-size:13px;color:rgba(255,255,255,.6);
+  position:relative;z-index:1;font-weight:300;
+}
+.gold-line{
+  width:48px;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  margin:.9rem auto .4rem;border-radius:2px;
+  position:relative;z-index:1;
+}
+
+main{max-width:920px;margin:0 auto;padding:2rem 1.25rem 3rem}
+
+.search-panel{
+  background:var(--white);border-radius:var(--radius);
+  padding:1.5rem;margin-bottom:1.5rem;
+  border:1px solid var(--gray-200);box-shadow:var(--shadow);
+}
+.search-panel h2{
+  font-size:12px;font-weight:500;color:var(--gray-400);
+  letter-spacing:1.5px;margin-bottom:1rem;
+}
+.filter-row{display:flex;gap:10px;flex-wrap:wrap}
+.filter-row>*{flex:1;min-width:180px}
+label{
+  display:block;font-size:12px;color:var(--gray-600);
+  margin-bottom:5px;font-weight:500;letter-spacing:.5px;
+}
+input[type=text],select{
+  width:100%;padding:10px 14px;
+  border:1px solid var(--gray-200);border-radius:var(--radius-sm);
+  font-size:14px;font-family:'Noto Sans TC',sans-serif;
+  color:var(--gray-800);background:var(--gray-100);
+  transition:border-color .15s,background .15s;appearance:none;
+}
+input[type=text]:focus,select:focus{
+  outline:none;border-color:var(--navy-light);background:var(--white);
+}
+.tag-filters{
+  display:flex;gap:8px;flex-wrap:wrap;
+  margin-top:1rem;padding-top:1rem;
+  border-top:1px solid var(--gray-200);
+}
+.tag{
+  font-size:12px;padding:5px 14px;border-radius:99px;
+  border:1px solid var(--gray-200);cursor:pointer;
+  background:var(--gray-100);color:var(--gray-600);
+  font-family:'Noto Sans TC',sans-serif;
+  transition:all .15s;user-select:none;
+}
+.tag:hover{border-color:var(--navy-mid);color:var(--navy-mid)}
+.tag.on{background:var(--navy);color:var(--white);border-color:var(--navy)}
+
+.result-meta{
+  font-size:13px;color:var(--gray-400);
+  margin-bottom:1.25rem;
+  display:flex;align-items:center;gap:8px;
+}
+.result-meta span{
+  display:inline-block;background:var(--navy);color:var(--white);
+  font-size:11px;font-weight:500;padding:2px 10px;border-radius:99px;
+}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+
+.card{
+  background:var(--white);border-radius:var(--radius);
+  border:1px solid var(--gray-200);overflow:hidden;
+  box-shadow:var(--shadow);transition:box-shadow .2s,transform .2s;
+  display:flex;flex-direction:column;
+  animation:fadeUp .3s ease both;
+}
+.card:nth-child(2){animation-delay:.08s}
+.card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
+.card-accent{height:4px;background:linear-gradient(90deg,var(--navy),var(--navy-light))}
+.card-body{padding:1.25rem;flex:1}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem}
+.card-name{
+  font-family:'Noto Serif TC',serif;
+  font-size:17px;font-weight:600;color:var(--navy);line-height:1.4;
+}
+.badge{
+  font-size:11px;padding:3px 10px;border-radius:99px;
+  white-space:nowrap;margin-left:8px;flex-shrink:0;font-weight:500;
+}
+.badge-ok{background:var(--green-bg);color:var(--green)}
+
+.info-item{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:13px;color:var(--gray-600);
+  margin-bottom:8px;line-height:1.6;
+}
+.info-icon{
+  width:22px;height:22px;background:var(--gray-100);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;flex-shrink:0;margin-top:1px;
+}
+.svc-row{display:flex;gap:5px;flex-wrap:wrap;margin:10px 0}
+.svc{
+  font-size:11px;padding:3px 9px;border-radius:4px;
+  background:#eef4fb;color:var(--navy-mid);font-weight:500;
+}
+.note-box{
+  background:var(--gray-100);
+  border-left:3px solid var(--gold);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:8px 12px;font-size:12px;color:var(--gray-600);
+  margin-top:10px;line-height:1.7;
+}
+
+.card-foot{
+  padding:1rem 1.25rem;border-top:1px solid var(--gray-200);
+  background:var(--gray-100);display:flex;flex-direction:column;gap:7px;
+}
+.contact-link{
+  display:flex;align-items:center;gap:8px;
+  font-size:13px;color:var(--gray-600);text-decoration:none;
+  padding:8px 12px;border-radius:var(--radius-sm);
+  background:var(--white);border:1px solid var(--gray-200);
+  transition:all .15s;font-family:'Noto Sans TC',sans-serif;
+}
+.contact-link:hover{border-color:var(--navy-mid);color:var(--navy);background:#f0f5fb}
+.contact-link.primary{
+  background:var(--navy);color:var(--white);
+  border-color:var(--navy);font-weight:500;
+}
+.contact-link.primary:hover{background:var(--navy-mid)}
+.contact-icon{font-size:14px;flex-shrink:0}
+
+.empty{
+  text-align:center;padding:4rem 2rem;
+  color:var(--gray-400);font-size:14px;
+  background:var(--white);border-radius:var(--radius);
+  border:1px solid var(--gray-200);grid-column:1/-1;
+}
+.empty-icon{font-size:40px;margin-bottom:1rem;display:block}
+
+footer{
+  text-align:center;padding:2rem 1rem;
+  font-size:12px;color:var(--gray-400);
+  border-top:1px solid var(--gray-200);
+  margin-top:2rem;line-height:2.2;
+}
+footer strong{color:var(--navy);font-weight:500}
+
+@media(max-width:540px){
+  .filter-row>*{min-width:100%}
+  .grid{grid-template-columns:1fr}
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">高雄市政府教育局</div>
+  <h1>合作諮商輔導機構查詢系統</h1>
+  <div class="gold-line"></div>
+  <p>本局簽約合作之諮商輔導機構資訊，供各校教職員生查詢使用</p>
+</header>
+
+<main>
+  <div class="search-panel">
+    <h2>搜　尋　條　件</h2>
+    <div class="filter-row">
+      <div>
+        <label>機構名稱</label>
+        <input type="text" id="q" placeholder="輸入機構名稱或地址…" oninput="render()">
+      </div>
+      <div>
+        <label>行政區</label>
+        <select id="sel-dist" onchange="render()">
+          <option value="">── 全部行政區 ──</option>
+          <optgroup label="原高雄市">
+            <option>鹽埕區</option><option>鼓山區</option><option>左營區</option>
+            <option>楠梓區</option><option>三民區</option><option>新興區</option>
+            <option>前金區</option><option>苓雅區</option><option>前鎮區</option>
+            <option>旗津區</option><option>小港區</option>
+          </optgroup>
+          <optgroup label="原高雄縣">
+            <option>鳳山區</option><option>林園區</option><option>大寮區</option>
+            <option>大樹區</option><option>大社區</option><option>仁武區</option>
+            <option>鳥松區</option><option>岡山區</option><option>橋頭區</option>
+            <option>燕巢區</option><option>田寮區</option><option>阿蓮區</option>
+            <option>路竹區</option><option>湖內區</option><option>茄萣區</option>
+            <option>永安區</option><option>彌陀區</option><option>梓官區</option>
+            <option>旗山區</option><option>美濃區</option><option>六龜區</option>
+            <option>甲仙區</option><option>杉林區</option><option>內門區</option>
+            <option>茂林區</option><option>桃源區</option><option>那瑪夏區</option>
+          </optgroup>
+        </select>
+      </div>
+      <div>
+        <label>服務項目</label>
+        <select id="sel-svc" onchange="render()">
+          <option value="">── 全部服務 ──</option>
+          <option>個別諮商</option>
+          <option>團體諮商</option>
+          <option>心理測驗</option>
+          <option>危機處置</option>
+          <option>親子諮商</option>
+        </select>
+      </div>
+    </div>
+    <div class="tag-filters">
+      <span class="tag" id="tag-online" onclick="toggleTag('online')">提供線上預約</span>
+      <span class="tag" id="tag-night"  onclick="toggleTag('night')">夜間時段（至21時後）</span>
+      <span class="tag" id="tag-youth"  onclick="toggleTag('youth')">青少年服務</span>
+    </div>
+  </div>
+
+  <div class="result-meta" id="meta"></div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <strong>高雄市政府教育局　學生事務與校園安全科</strong><br>
+  資料如有異動，請以各機構公告為準　｜　如有疑問請洽業務承辦人<br>
+  最後更新日期：<span id="lastupdate"></span>
+</footer>
+
+<script>
+document.getElementById('lastupdate').textContent =
+  new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric'});
+
+/* ══════════════════════════════════════════════════
+   【機構資料】
+   日後新增機構：複製大括號 { } 整段，貼在最後一筆後方，
+   記得在前一筆結尾加上逗號「,」
+   ══════════════════════════════════════════════════ */
+const DATA = [
+  {
+    name: "張老師基金會",
+    dist: "三民區",
+    addr: "三民區九如二路156號",
+    tel: "07-311-9595",
+    hotline: "1980",
+    email: "kh@1980.org.tw",
+    website: "https://www.1980.org.tw",
+    services: ["個別諮商","團體諮商","危機處置"],
+    hours: "週一至週五　09:00 – 21:00",
+    online: true,
+    youth: true,
+    note: "設有1980輔導專線，24小時提供電話輔導服務，亦接受學校個案轉介"
+  },
+  {
+    name: "回甘諮商所",
+    dist: "苓雅區",
+    addr: "苓雅區四維三路6號5樓",
+    tel: "07-335-0000",
+    hotline: "",
+    email: "service@huigan.com.tw",
+    website: "",
+    services: ["個別諮商","親子諮商","心理測驗"],
+    hours: "週二至週六　10:00 – 21:00",
+    online: true,
+    youth: true,
+    note: "提供青少年及大學生優先預約，設有親子諮商專區"
+  }
+];
+/* ══════════════════════════════════════════════════ */
+
+let tags = {online:false, night:false, youth:false};
+
+function toggleTag(t){
+  tags[t] = !tags[t];
+  document.getElementById('tag-'+t).classList.toggle('on', tags[t]);
+  render();
+}
+
+function filtered(){
+  const q    = (document.getElementById('q').value||'').trim().toLowerCase();
+  const dist = document.getElementById('sel-dist').value;
+  const svc  = document.getElementById('sel-svc').value;
+  return DATA.filter(d=>{
+    if(q && !d.name.toLowerCase().includes(q) && !d.addr.toLowerCase().includes(q)) return false;
+    if(dist && d.dist !== dist) return false;
+    if(svc  && !d.services.includes(svc)) return false;
+    if(tags.online && !d.online) return false;
+    if(tags.night  && !d.hours.includes('21') && !d.hours.includes('22')) return false;
+    if(tags.youth  && !d.youth) return false;
+    return true;
+  });
+}
+
+function render(){
+  const list = filtered();
+  document.getElementById('meta').innerHTML =
+    '查詢結果　<span>共 '+list.length+' 間機構</span>';
+
+  const g = document.getElementById('grid');
+  if(!list.length){
+    g.innerHTML='<div class="empty"><span class="empty-icon">🔍</span>目前無符合條件的合作機構<br>請調整篩選條件後再試</div>';
+    return;
+  }
+
+  g.innerHTML = list.map(d=>{
+    const hotlineBtn = d.hotline
+      ? `<a class="contact-link" href="tel:${d.hotline}">
+           <span class="contact-icon">🆘</span>輔導專線　${d.hotline}
+         </a>` : '';
+    const webBtn = d.website
+      ? `<a class="contact-link" href="${d.website}" target="_blank" rel="noopener">
+           <span class="contact-icon">🌐</span>官方網站
+         </a>` : '';
+
+    return `
+    <div class="card">
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <div class="card-head">
+          <div class="card-name">${d.name}</div>
+          <span class="badge badge-ok">合作中</span>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div>${d.dist}　${d.addr}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">🕐</div>
+          <div>${d.hours}</div>
+        </div>
+        <div class="svc-row">
+          ${d.services.map(s=>`<span class="svc">${s}</span>`).join('')}
+          ${d.online?'<span class="svc" style="background:#e3f2fd;color:#1565c0">線上預約</span>':''}
+          ${d.youth?'<span class="svc" style="background:#f3e5f5;color:#6a1b9a">青少年服務</span>':''}
+        </div>
+        ${d.note?`<div class="note-box">${d.note}</div>`:''}
+      </div>
+      <div class="card-foot">
+        <a class="contact-link primary" href="tel:${d.tel}">
+          <span class="contact-icon">📞</span>預約電話　${d.tel}
+        </a>
+        <a class="contact-link" href="mailto:${d.email}">
+          <span class="contact-icon">✉</span>${d.email}
+        </a>
+        ${hotlineBtn}
+        ${webBtn}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+render();
+</script>
+</body>
+</html>
